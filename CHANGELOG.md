@@ -1,3 +1,2 @@
-## 0.0.1
-
-* Added the wizard widget
+## 1.0.0 - 9 November 2021
+* Initial release
