@@ -149,17 +149,16 @@ class ProviderExamplePage extends StatelessWidget {
   Widget _buildProgressIndicator(
     BuildContext context,
   ) {
-    final controller = WizardController.of(context);
     return StreamBuilder<int>(
-      stream: controller.indexStream,
-      initialData: controller.index,
+      stream: context.wizardController.indexStream,
+      initialData: context.wizardController.index,
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.hasError) {
           return const SizedBox.shrink();
         }
         final index = snapshot.data!;
         return StepsProgressIndicator(
-          count: controller.stepCount,
+          count: context.wizardController.stepCount,
           index: index,
         );
       },
@@ -176,10 +175,9 @@ class _AppBarTitle extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    final controller = WizardController.of(context);
     return StreamBuilder<int>(
-      stream: controller.indexStream,
-      initialData: controller.index,
+      stream: context.wizardController.indexStream,
+      initialData: context.wizardController.index,
       builder: (context, snapshot) {
         return Text("Wizard Example - Step ${snapshot.data! + 1}");
       },

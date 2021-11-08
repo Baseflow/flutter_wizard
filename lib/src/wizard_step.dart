@@ -1,8 +1,6 @@
 import '../flutter_wizard.dart';
 
-abstract class WizardStep {
-  WizardStep();
-
+mixin WizardStep {
   /// The field used to store the wizard controller.
   late WizardController _wizardController;
 
@@ -15,11 +13,13 @@ abstract class WizardStep {
     WizardController wizardController,
   ) {
     _wizardController = wizardController;
-    onControllerReceived();
+    onControllerReceived(wizardController);
   }
 
   /// Event which fires when the [wizardController] has been set.
-  Future<void> onControllerReceived() async {}
+  Future<void> onControllerReceived(
+    WizardController wizardController,
+  ) async {}
 
   /// Triggered when step has started showing.
   Future<void> onShowing() async {}

@@ -10,14 +10,13 @@ class StepsOverview extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    final controller = WizardController.of(context);
     return ListView.builder(
-      itemCount: controller.stepControllers.length,
+      itemCount: context.wizardController.stepControllers.length,
       itemBuilder: (context, index) {
-        final step = controller.stepControllers[index].step;
+        final step = context.wizardController.stepControllers[index].step;
         return StreamBuilder<bool>(
-          stream: controller.getIsAnimateToEnabledStream(index),
-          initialData: controller.getIsAnimateToEnabled(index),
+          stream: context.wizardController.getIsAnimateToEnabledStream(index),
+          initialData: context.wizardController.getIsAnimateToEnabled(index),
           builder: (context, snapshot) {
             final enabled = snapshot.data!;
             String title;
@@ -36,19 +35,20 @@ class StepsOverview extends StatelessWidget {
                 break;
             }
             return StreamBuilder<int>(
-                stream: controller.indexStream,
-                initialData: controller.index,
-                builder: (context, snapshot) {
-                  final selectedIndex = snapshot.data!;
-                  return ListTile(
-                    title: Text(title),
-                    onTap: enabled
-                        ? () => controller.animateTo(index: index)
-                        : null,
-                    enabled: enabled,
-                    selected: index == selectedIndex,
-                  );
-                });
+              stream: context.wizardController.indexStream,
+              initialData: context.wizardController.index,
+              builder: (context, snapshot) {
+                final selectedIndex = snapshot.data!;
+                return ListTile(
+                  title: Text(title),
+                  onTap: enabled
+                      ? () => context.wizardController.animateTo(index: index)
+                      : null,
+                  enabled: enabled,
+                  selected: index == selectedIndex,
+                );
+              },
+            );
           },
         );
       },

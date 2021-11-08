@@ -8,10 +8,9 @@ class FinishedButton extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    final controller = WizardController.of(context);
     return StreamBuilder<bool>(
-      stream: controller.getIsGoNextEnabledStream(),
-      initialData: controller.getIsGoNextEnabled(),
+      stream: context.wizardController.getIsGoNextEnabledStream(),
+      initialData: context.wizardController.getIsGoNextEnabled(),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.hasError) {
           return const SizedBox.shrink();

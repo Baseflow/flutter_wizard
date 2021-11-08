@@ -8,10 +8,9 @@ class PreviousButton extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    final controller = WizardController.of(context);
     return StreamBuilder<bool>(
-      stream: controller.getIsGoBackEnabledStream(),
-      initialData: controller.getIsGoBackEnabled(),
+      stream: context.wizardController.getIsGoBackEnabledStream(),
+      initialData: context.wizardController.getIsGoBackEnabled(),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.hasError) {
           return const SizedBox.shrink();
@@ -19,7 +18,7 @@ class PreviousButton extends StatelessWidget {
         final enabled = snapshot.data!;
         return OutlinedButton(
           child: const Text("Previous"),
-          onPressed: enabled ? controller.previous : null,
+          onPressed: enabled ? context.wizardController.previous : null,
         );
       },
     );

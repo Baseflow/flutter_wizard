@@ -30,9 +30,9 @@ class Wizard extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  /// The builder method to build the step view. The builder method provides the
-  /// [BuildContext] and [WizardStepState]. The state can then be used to
-  /// determine how to build the view.
+  /// The builder method to build the steps corresponding widget. The builder
+  /// method provides the [BuildContext] and [WizardStepState]. The state can
+  /// then be used to determine how to build the view.
   ///
   /// Example:
   /// ```dart
@@ -57,14 +57,13 @@ class Wizard extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    final controller = WizardController.of(context);
     return PageView.builder(
-      controller: controller.pageController,
-      itemCount: controller.stepControllers.length,
+      controller: context.wizardController.pageController,
+      itemCount: context.wizardController.stepControllers.length,
       itemBuilder: (context, index) {
         return stepBuilder(
           context,
-          controller.stepControllers[index].step,
+          context.wizardController.stepControllers[index].step,
         );
       },
       // TODO: Improve

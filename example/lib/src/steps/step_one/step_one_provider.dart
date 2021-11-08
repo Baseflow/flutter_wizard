@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wizard/flutter_wizard.dart';
 import 'package:rxdart/rxdart.dart';
 
-class StepOneProvider extends WizardStep {
+class StepOneProvider with WizardStep {
   StepOneProvider();
 
   final _description = BehaviorSubject<String>.seeded('');

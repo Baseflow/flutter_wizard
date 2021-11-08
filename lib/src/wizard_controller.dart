@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/animation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
@@ -502,9 +504,9 @@ class DefaultWizardController extends StatefulWidget {
   /// The child widget
   final Widget child;
 
-  /// Callback method that gets triggered when the [WizardController] is
-  /// created.
-  final void Function(WizardController controller)? onControllerCreated;
+  /// Callback that gets triggered when the [WizardController] is created.
+  final FutureOr<void> Function(WizardController controller)?
+      onControllerCreated;
 
   @override
   _DefaultWizardControllerState createState() =>

@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../barrel.dart';
 
-class StepTwoProvider extends WizardStep with DisposableMixin {
+class StepTwoProvider with WizardStep, DisposableMixin {
   StepTwoProvider()
       : _options = BehaviorSubject<List<String>>.seeded(['A', 'B']),
         _selection = BehaviorSubject<String?>.seeded(null) {

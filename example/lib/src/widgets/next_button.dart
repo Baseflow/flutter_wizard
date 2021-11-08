@@ -8,10 +8,9 @@ class NextButton extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    final controller = WizardController.of(context);
     return StreamBuilder<bool>(
-      stream: controller.getIsGoNextEnabledStream(),
-      initialData: controller.getIsGoNextEnabled(),
+      stream: context.wizardController.getIsGoNextEnabledStream(),
+      initialData: context.wizardController.getIsGoNextEnabled(),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.hasError) {
           return const SizedBox.shrink();
@@ -19,7 +18,7 @@ class NextButton extends StatelessWidget {
         final enabled = snapshot.data!;
         return ElevatedButton(
           child: const Text("Next"),
-          onPressed: enabled ? controller.next : null,
+          onPressed: enabled ? context.wizardController.next : null,
         );
       },
     );

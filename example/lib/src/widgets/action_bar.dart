@@ -33,16 +33,15 @@ class ActionBar extends StatelessWidget {
   Widget _buildForwardButton(
     BuildContext context,
   ) {
-    final controller = WizardController.of(context);
     return StreamBuilder<int>(
-      stream: controller.indexStream,
-      initialData: controller.index,
+      stream: context.wizardController.indexStream,
+      initialData: context.wizardController.index,
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.hasError) {
           return const SizedBox.shrink();
         }
         final index = snapshot.data!;
-        if (controller.isLastStep(index)) {
+        if (context.wizardController.isLastStep(index)) {
           return const FinishedButton();
         }
         return const NextButton();
