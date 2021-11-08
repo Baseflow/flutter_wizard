@@ -1,14 +1,18 @@
 # Flutter Wizard
 A library that makes it easy for you to create your own custom wizard.
 
+![Responsive wizard example](https://user-images.githubusercontent.com/1774351/140836023-f0e7888b-a947-4f72-9b71-19756bda6f0f.gif)
+
 # How to use
 
 In this chapter I'll explain to you how you could use the `flutter_wizard` package to create you own custom wizard.
 
-- [Wrapping your widget with a wizard controller](#wrapping-your-widget-with-a-wizard-controller)
-- [Step state management](#step-state-management)
-- [Determine the widgets to show for each step](#determine-the-widgets-to-show-for-each-step)
-- [Custom widget interaction with the wizard](#custom-widget-interaction-with-the-wizard)
+- [Flutter Wizard](#flutter-wizard)
+- [How to use](#how-to-use)
+  - [Wrapping your widget with a wizard controller](#wrapping-your-widget-with-a-wizard-controller)
+  - [Step state management](#step-state-management)
+  - [Determine the widgets to show for each step](#determine-the-widgets-to-show-for-each-step)
+  - [Custom widget interaction with the wizard](#custom-widget-interaction-with-the-wizard)
 
 ## Wrapping your widget with a wizard controller
 
