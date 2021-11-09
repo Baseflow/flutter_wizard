@@ -1,5 +1,5 @@
 # Flutter Wizard
-A library that makes it easy for you to create your own custom wizard.
+A library that makes it easy for you to create your custom wizard. You'll have 100% control over the appearance of your wizard.
 
 ![Responsive wizard example](https://user-images.githubusercontent.com/1774351/140836023-f0e7888b-a947-4f72-9b71-19756bda6f0f.gif)
 
@@ -7,12 +7,10 @@ A library that makes it easy for you to create your own custom wizard.
 
 In this chapter I'll explain to you how you could use the `flutter_wizard` package to create you own custom wizard.
 
-- [Flutter Wizard](#flutter-wizard)
-- [How to use](#how-to-use)
-  - [Wrapping your widget with a wizard controller](#wrapping-your-widget-with-a-wizard-controller)
-  - [Step state management](#step-state-management)
-  - [Determine the widgets to show for each step](#determine-the-widgets-to-show-for-each-step)
-  - [Custom widget interaction with the wizard](#custom-widget-interaction-with-the-wizard)
+ - [Wrapping your widget with a wizard controller](#wrapping-your-widget-with-a-wizard-controller)
+ - [Step state management](#step-state-management)
+ - [Determine the widgets to show for each step](#determine-the-widgets-to-show-for-each-step)
+ - [Custom widget interaction with the wizard](#custom-widget-interaction-with-the-wizard)
 
 ## Wrapping your widget with a wizard controller
 
@@ -68,7 +66,7 @@ In this example above the `ProgressIndicator`, `Wizard`, and `ActionBar` all hav
 
 ## Step state management
 
-As described in the last chapter you can provide the `DefaultWizardController` with `stepControllers`. This argument expects a list of `StepController`s. These step controllers need to be provided a step state. This step state could be a bloc, cubit, provider, notifier, etc. The only thing you are required to do is mixin the `WizardStep` into your statemanaged object.
+As described in the last chapter you can provide the `DefaultWizardController` with `stepControllers`. This argument expects a list of `WizardStepController`s. These step controllers need to be provided a step state. This step state could be a bloc, cubit, provider, notifier, etc. The only thing you are required to do is mixin the `WizardStep` into your statemanaged object.
 
 When mixin the `WizardStep` your statemanaged object will be extended with the following properties and methods.
 
@@ -136,7 +134,7 @@ Now with the `DefaultWizardController` setup it's time to setup the widgets to s
 We are going to need to `Wizard` widget for this. This widget contains only one arguments.
 
 **stepBuilder**  
-The builder method to build the steps corresponding widget. The builder method provides you with a [BuildContext] and a wizard step state. The wizard step state is the object in which you've mixed the `WizardStep`. This could be your bloc, cubit, provider, notifier, etc. Then based on the class type of the state you can determine the widget to show and pass the state into this widget to display the state to the user.
+The builder method to build the steps corresponding widget. The builder method provides you with a `BuildContext` and a wizard step state. The wizard step state is the object in which you've mixed the `WizardStep`. This could be your bloc, cubit, provider, notifier, etc. Then based on the class type of the state you can determine the widget to show and pass the state into this widget to display the state to the user.
 
 Example:
 ```dart
@@ -213,7 +211,7 @@ Indicates weather the go back action is enabled as a stream.
 A method to enable the go next button for a specific `int` index.
 
 **disableGoNext**  
-A method to disable the go next button for a specific `int` index.
+A method to disable the go next button for a specific `int` index. When disabling an index that is lower then the current index the `Wizard` will automatically animate back to the provided index.
 
 **getIsAnimateToEnabledStream**  
 Indicates weather the animate to action is enabled for a specific `int` index as a stream.
