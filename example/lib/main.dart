@@ -75,31 +75,42 @@ class ProviderExamplePage extends StatelessWidget {
         ),
         WizardStepController(
           step: provider.stepThreeProvider,
-        )
+        ),
       ],
-      child: Scaffold(
-        appBar: AppBar(
-          title: const _AppBarTitle(),
-        ),
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            return Column(
-              children: [
-                _buildProgressIndicator(
-                  context,
-                ),
-                Expanded(
-                  child: _buildWizard(
-                    context,
-                    provider: provider,
-                    constraints: constraints,
-                  ),
-                ),
-                const ActionBar(),
-              ],
-            );
-          },
-        ),
+      // Wrapping with a builder so the context contains the [WizardController]
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: StreamBuilder<int>(
+                stream: context.wizardController.indexStream,
+                initialData: context.wizardController.index,
+                builder: (context, snapshot) {
+                  return Text("Wizard Example - Step ${snapshot.data! + 1}");
+                },
+              ),
+            ),
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
+                  children: [
+                    _buildProgressIndicator(
+                      context,
+                    ),
+                    Expanded(
+                      child: _buildWizard(
+                        context,
+                        provider: provider,
+                        constraints: constraints,
+                      ),
+                    ),
+                    const ActionBar(),
+                  ],
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }
@@ -161,25 +172,6 @@ class ProviderExamplePage extends StatelessWidget {
           count: context.wizardController.stepCount,
           index: index,
         );
-      },
-    );
-  }
-}
-
-class _AppBarTitle extends StatelessWidget {
-  const _AppBarTitle({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(
-    BuildContext context,
-  ) {
-    return StreamBuilder<int>(
-      stream: context.wizardController.indexStream,
-      initialData: context.wizardController.index,
-      builder: (context, snapshot) {
-        return Text("Wizard Example - Step ${snapshot.data! + 1}");
       },
     );
   }

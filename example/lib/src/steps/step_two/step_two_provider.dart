@@ -17,6 +17,14 @@ class StepTwoProvider with WizardStep, DisposableMixin {
         wizardController.disableGoNext(index);
       }
     });
+
+    Stream.periodic(
+      const Duration(seconds: 3),
+    ).listen((_) {
+      if (selection == 'B') {
+        select(selection!);
+      }
+    });
   }
 
   final BehaviorSubject<List<String>> _options;
