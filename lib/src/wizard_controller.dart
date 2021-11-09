@@ -46,6 +46,9 @@ abstract class WizardController {
   /// the initial load.
   ///
   /// onStepChanged: Callback that gets triggered when the step changes.
+  ///
+  /// onForcedAnimateBackCallback: Callback that gets triggered when the
+  /// disableGoNext forces the wizard to animate to a lower index.
   factory WizardController({
     required List<WizardStepController> stepControllers,
     int initialIndex = 0,
@@ -121,10 +124,14 @@ abstract class WizardController {
     int index,
   );
 
-  /// Disable the next button for specified index.
-  void disableGoNext(
-    int index,
-  );
+  /// Disable the next button for specified index.  When disabling an index that
+  /// is lower then the current index the `Wizard` will automatically animate
+  /// back to the provided index.
+  Future<void> disableGoNext(
+    int index, {
+    Duration duration,
+    Curve curve,
+  });
 
   /// Show the next step. If the current step equals the last step nothing will
   /// happen.
@@ -375,10 +382,23 @@ class WizardControllerImpl implements WizardController {
   }
 
   @override
-  void disableGoNext(
-    int index,
-  ) {
+  Future<void> disableGoNext(
+    int index, {
+    Duration duration = const Duration(milliseconds: 150),
+    Curve curve = Curves.easeIn,
+  }) async {
     _getStepController(index).disableGoNext();
+
+    final currentIndex = this.index;
+    if (index > currentIndex) {
+      return;
+    }
+
+    await animateTo(
+      index: index,
+      duration: duration,
+      curve: curve,
+    );
   }
 
   @override
