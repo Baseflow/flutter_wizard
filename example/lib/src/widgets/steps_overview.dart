@@ -15,8 +15,8 @@ class StepsOverview extends StatelessWidget {
       itemBuilder: (context, index) {
         final step = context.wizardController.stepControllers[index].step;
         return StreamBuilder<bool>(
-          stream: context.wizardController.getIsAnimateToEnabledStream(index),
-          initialData: context.wizardController.getIsAnimateToEnabled(index),
+          stream: context.wizardController.getIsGoToEnabledStream(index),
+          initialData: context.wizardController.getIsGoToEnabled(index),
           builder: (context, snapshot) {
             final enabled = snapshot.data!;
             String title;
@@ -42,7 +42,7 @@ class StepsOverview extends StatelessWidget {
                 return ListTile(
                   title: Text(title),
                   onTap: enabled
-                      ? () => context.wizardController.animateTo(index: index)
+                      ? () => context.wizardController.goTo(index: index)
                       : null,
                   enabled: enabled,
                   selected: index == selectedIndex,

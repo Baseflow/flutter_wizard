@@ -6,3 +6,5 @@ export 'src/wizard_controller.dart';
 export 'src/wizard_step.dart';
 export 'src/wizard_step_controller.dart';
 export 'src/extensions/build_context_extensions.dart';
+export 'src/events/events.dart';
+export 'src/wizard_event_listener.dart';

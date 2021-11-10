@@ -18,7 +18,7 @@ class PreviousButton extends StatelessWidget {
         final enabled = snapshot.data!;
         return OutlinedButton(
           child: const Text("Previous"),
-          onPressed: enabled ? context.wizardController.previous : null,
+          onPressed: enabled ? context.wizardController.goBack : null,
         );
       },
     );

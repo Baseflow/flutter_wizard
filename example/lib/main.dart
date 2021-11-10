@@ -90,24 +90,37 @@ class ProviderExamplePage extends StatelessWidget {
                 },
               ),
             ),
-            body: LayoutBuilder(
-              builder: (context, constraints) {
-                return Column(
-                  children: [
-                    _buildProgressIndicator(
-                      context,
+            body: WizardEventListener(
+              listener: (context, event) {
+                debugPrint('### ${event.runtimeType} received');
+                if (event is WizardForcedGoBackToEvent) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      'Step ${event.toIndex + 2} got disabled so the wizard is moving back to step ${event.toIndex + 1}.',
                     ),
-                    Expanded(
-                      child: _buildWizard(
-                        context,
-                        provider: provider,
-                        constraints: constraints,
-                      ),
-                    ),
-                    const ActionBar(),
-                  ],
-                );
+                    dismissDirection: DismissDirection.horizontal,
+                  ));
+                }
               },
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Column(
+                    children: [
+                      _buildProgressIndicator(
+                        context,
+                      ),
+                      Expanded(
+                        child: _buildWizard(
+                          context,
+                          provider: provider,
+                          constraints: constraints,
+                        ),
+                      ),
+                      const ActionBar(),
+                    ],
+                  );
+                },
+              ),
             ),
           );
         },

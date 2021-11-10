@@ -64,6 +64,20 @@ abstract class WizardController {
   /// Controller to control the page view.
   PageController get pageController;
 
+  /// Streams the events that happen on this [WizardController]. The events have
+  /// a base type of [WizardEvent] and can be casted to the specific event type.
+  /// The events are:
+  /// - [WizardEnableGoBackEvent]: Triggered when `enableGoBack` is called.
+  /// - [WizardEnableGoNextEvent]: Triggered when `enableGoNext` is called.
+  /// - [WizardDisableGoBackEvent]: Triggered when `disableGoBack` is called.
+  /// - [WizardDisableGoNextEvent]: Triggered when `disableGoNext` is called.
+  /// - [WizardGoNextEvent]: Triggered when `goNext` is called.
+  /// - [WizardGoBackEvent]: Triggered when `goBack` is called.
+  /// - [WizardGoToEvent]: Triggered when `goTo` is called.
+  /// - [WizardForcedGoBackToEvent]: Triggered when `disableGoNext` is called with an
+  /// index lower as the current index.
+  Stream<WizardEvent> get eventStream;
+
   /// The step controllers.
   List<WizardStepController> get stepControllers;
 
@@ -93,12 +107,12 @@ abstract class WizardController {
   /// Indicates whether the back button currently is enabled for current index.
   bool getIsGoBackEnabled();
 
-  /// Enable the previous button for specified index.
+  /// Enable the back button for specified index.
   void enableGoBack(
     int index,
   );
 
-  /// Disable the previous button for specified index.
+  /// Disable the back button for specified index.
   void disableGoBack(
     int index,
   );
@@ -109,13 +123,13 @@ abstract class WizardController {
   /// Indicates whether the next button currently is enabled for current index.
   bool getIsGoNextEnabled();
 
-  /// Stream whether its allowed to animate to specified index.
-  Stream<bool> getIsAnimateToEnabledStream(
+  /// Stream whether its allowed to go to specified index.
+  Stream<bool> getIsGoToEnabledStream(
     int index,
   );
 
-  /// Indicates whether its allowed to animate to specified index.
-  bool getIsAnimateToEnabled(
+  /// Indicates whether its allowed to go to specified index.
+  bool getIsGoToEnabled(
     int index,
   );
 
@@ -135,7 +149,7 @@ abstract class WizardController {
 
   /// Show the next step. If the current step equals the last step nothing will
   /// happen.
-  Future<void> next({
+  Future<void> goNext({
     Duration delay,
     Duration duration,
     Curve curve,
@@ -143,7 +157,7 @@ abstract class WizardController {
 
   /// Animate to the step index. If the current step index equals the provided
   /// step index nothing will happen.
-  Future<void> animateTo({
+  Future<void> goTo({
     required int index,
     Duration delay,
     Duration duration,
@@ -152,7 +166,7 @@ abstract class WizardController {
 
   /// Show the previous step. If current step equals the first step nothing
   /// will happen.
-  Future<void> previous({
+  Future<void> goBack({
     Duration duration,
     Curve curve,
   });
@@ -197,6 +211,7 @@ class WizardControllerImpl implements WizardController {
         _index = BehaviorSubject<int>.seeded(
           initialIndex,
         ),
+        _events = BehaviorSubject<WizardEvent>(),
         _onStepChanged = onStepChanged {
     _setWizardControllerInSteps();
   }
@@ -209,6 +224,8 @@ class WizardControllerImpl implements WizardController {
 
   final BehaviorSubject<int> _index;
 
+  final BehaviorSubject<WizardEvent> _events;
+
   final StepCallback? _onStepChanged;
 
   @override
@@ -216,6 +233,9 @@ class WizardControllerImpl implements WizardController {
 
   @override
   final PageController pageController;
+
+  @override
+  Stream<WizardEvent> get eventStream => _events.stream.asBroadcastStream();
 
   @override
   Stream<int> get indexStream => _index.stream.asBroadcastStream();
@@ -233,7 +253,7 @@ class WizardControllerImpl implements WizardController {
   bool isLastStep(int index) => index == stepCount - 1;
 
   @override
-  Future<void> next({
+  Future<void> goNext({
     Duration? delay,
     Duration duration = const Duration(milliseconds: 150),
     Curve curve = Curves.easeIn,
@@ -241,6 +261,10 @@ class WizardControllerImpl implements WizardController {
     if (isLastStep(index) || !getIsGoNextEnabled()) {
       return;
     }
+    _events.add(WizardGoNextEvent(
+      fromIndex: index,
+      toIndex: index + 1,
+    ));
     final delayUntil = DateTime.now().add(duration);
     final oldIndex = index;
     final newIndex = oldIndex + 1;
@@ -274,13 +298,17 @@ class WizardControllerImpl implements WizardController {
   }
 
   @override
-  Future<void> previous({
+  Future<void> goBack({
     Duration duration = const Duration(milliseconds: 150),
     Curve curve = Curves.easeIn,
   }) async {
     if (isFirstStep(index) || !getIsGoBackEnabled()) {
       return;
     }
+    _events.add(WizardGoBackEvent(
+      fromIndex: index,
+      toIndex: index - 1,
+    ));
     final oldIndex = index;
     final newIndex = oldIndex - 1;
     if (_onStepChanged != null) {
@@ -305,15 +333,19 @@ class WizardControllerImpl implements WizardController {
   }
 
   @override
-  Future<void> animateTo({
+  Future<void> goTo({
     required int index,
     Duration? delay,
     Duration duration = const Duration(milliseconds: 150),
     Curve curve = Curves.easeIn,
   }) async {
-    if (this.index == index || !getIsAnimateToEnabled(index)) {
+    if (this.index == index || !getIsGoToEnabled(index)) {
       return;
     }
+    _events.add(WizardGoToEvent(
+      fromIndex: this.index,
+      toIndex: index,
+    ));
     final delayUntil = DateTime.now().add(duration);
     final oldIndex = this.index;
     final newIndex = index;
@@ -353,32 +385,14 @@ class WizardControllerImpl implements WizardController {
     _index.close();
   }
 
-  int _getIndex(
-    int? index,
-  ) {
-    if (index == null) {
-      return this.index;
-    }
-    if (index <= 0) {
-      return 0;
-    }
-    if (index >= stepControllers.length - 1) {
-      return stepControllers.length - 1;
-    }
-    return index;
-  }
-
-  WizardStepController _getStepController(
-    int? index,
-  ) {
-    return stepControllers[_getIndex(index)];
-  }
-
   @override
   void disableGoBack(
     int index,
   ) {
-    _getStepController(index).disableGoBack();
+    _events.add(WizardDisableGoBackEvent(
+      index: index,
+    ));
+    stepControllers[index].disableGoBack();
   }
 
   @override
@@ -387,14 +401,22 @@ class WizardControllerImpl implements WizardController {
     Duration duration = const Duration(milliseconds: 150),
     Curve curve = Curves.easeIn,
   }) async {
-    _getStepController(index).disableGoNext();
+    _events.add(WizardDisableGoNextEvent(
+      index: index,
+    ));
+    stepControllers[index].disableGoNext();
 
     final currentIndex = this.index;
-    if (index > currentIndex) {
+    if (index >= currentIndex) {
       return;
     }
 
-    await animateTo(
+    _events.add(WizardForcedGoBackToEvent(
+      fromIndex: currentIndex,
+      toIndex: index,
+    ));
+
+    await goTo(
       index: index,
       duration: duration,
       curve: curve,
@@ -403,16 +425,22 @@ class WizardControllerImpl implements WizardController {
 
   @override
   void enableGoBack(
-    int? index,
+    int index,
   ) {
-    _getStepController(index).enableGoBack();
+    _events.add(WizardEnableGoBackEvent(
+      index: index,
+    ));
+    stepControllers[index].enableGoBack();
   }
 
   @override
   void enableGoNext(
-    int? index,
+    int index,
   ) {
-    _getStepController(index).enableGoNext();
+    _events.add(WizardEnableGoNextEvent(
+      index: index,
+    ));
+    stepControllers[index].enableGoNext();
   }
 
   @override
@@ -442,7 +470,7 @@ class WizardControllerImpl implements WizardController {
   }
 
   @override
-  bool getIsAnimateToEnabled(
+  bool getIsGoToEnabled(
     int index,
   ) {
     final indexes = _generateIndexList(index - 1);
@@ -455,7 +483,7 @@ class WizardControllerImpl implements WizardController {
   }
 
   @override
-  Stream<bool> getIsAnimateToEnabledStream(
+  Stream<bool> getIsGoToEnabledStream(
     int index,
   ) {
     final indexes = _generateIndexList(index - 1);
