@@ -2,7 +2,7 @@ name: flutter_wizard
 description: A library that makes it easy for you to create your custom wizard. You'll have 100% control over the appearance of your wizard.
 homepage: https://github.com/Baseflow/flutter_wizard
 documentation: https://github.com/Baseflow/flutter_wizard
-version: 1.0.2
+version: 2.0.0
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -11,11 +11,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  rxdart: ^0.27.2
+  rxdart: ^0.27.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.4
+  flutter_lints: ^1.0.0
 
 flutter:
