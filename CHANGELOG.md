@@ -18,3 +18,6 @@
   * The `animateTo` is renamed to `goTo`
   * The `getIsAnimateToEnabledStream` is renamed to `getIsGoToEnabledStream`
   * The `getIsAnimateToEnabled` is renamed to `getIsGoToEnabled`
+
+## 2.0.1
+* Downgraded the `rxdart` package to `^0.26.0`

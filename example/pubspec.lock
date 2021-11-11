@@ -80,7 +80,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.0.0"
+    version: "2.0.1"
   lints:
     dependency: transitive
     description:
@@ -129,7 +129,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.27.2"
+    version: "0.26.0"
   sky_engine:
     dependency: transitive
     description: flutter
