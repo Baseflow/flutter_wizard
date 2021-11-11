@@ -1,4 +1,6 @@
-# Flutter Wizard
+# Flutter Wizard 
+## Author: [Jop Middelkamp](https://github.com/jopmiddelkamp)
+
 A library that makes it easy for you to create your custom wizard. You'll have 100% control over the appearance of your wizard.
 
 ![Responsive wizard example](https://user-images.githubusercontent.com/1774351/140836023-f0e7888b-a947-4f72-9b71-19756bda6f0f.gif)
