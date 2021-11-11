@@ -21,3 +21,6 @@
 
 ## 2.0.1
 * Downgraded the `rxdart` package to `^0.26.0`
+
+## 2.0.2
+* Added the author to the readme
