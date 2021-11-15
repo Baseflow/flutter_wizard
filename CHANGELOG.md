@@ -1,11 +1,11 @@
-## 1.0.0
-* Initial release
+## 2.0.3
+* Upgraded the `rxdart` package to `^0.27.0`
 
-## 1.0.1
-* Added responsive wizard example GIF
+## 2.0.2
+* Added the author to the readme
 
-## 1.0.2
-* The `disableGoBack` method now automatically animates back if needed
+## 2.0.1
+* Downgraded the `rxdart` package to `^0.26.0`
 
 ## 2.0.0
 * The `WizardController` now contains a `eventStream` property
@@ -19,11 +19,11 @@
   * The `getIsAnimateToEnabledStream` is renamed to `getIsGoToEnabledStream`
   * The `getIsAnimateToEnabled` is renamed to `getIsGoToEnabled`
 
-## 2.0.1
-* Downgraded the `rxdart` package to `^0.26.0`
+## 1.0.2
+* The `disableGoBack` method now automatically animates back if needed
 
-## 2.0.2
-* Added the author to the readme
-* 
-## 2.0.3
-* Upgraded the `rxdart` package to `^0.27.0`
+## 1.0.1
+* Added responsive wizard example GIF
+
+## 1.0.0
+* Initial release
