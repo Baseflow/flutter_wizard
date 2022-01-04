@@ -7,5 +7,4 @@ export 'go_back_event.dart';
 export 'go_event.dart';
 export 'go_next_event.dart';
 export 'go_to_event.dart';
-export 'index_event.dart';
 export 'wizard_event.dart';

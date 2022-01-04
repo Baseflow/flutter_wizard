@@ -2,16 +2,15 @@ import 'package:rxdart/rxdart.dart';
 
 import '../flutter_wizard.dart';
 
+/// Coordinates the wizard steps and its input control states.
 abstract class WizardStepController {
-  /// Coordinates the wizard steps and its input control states
+  /// Coordinates the wizard steps and its input control states.
   ///
   /// step: The wizard step which can contain ever state management solution
   /// that you wish. A provider, bloc, etc can be provided in this property.
   ///
-  /// initialIndex: Indicates the initial index of the wizard.
-  ///
-  /// initialIsPreviousEnabled: Indicates if the previous button will be enabled
-  /// on the initial load.
+  /// initialIsBackEnabled: Indicates if the back button will be enabled on the
+  /// initial load.
   ///
   /// initialIsNextEnabled: Indicates if the previous button will be enabled on
   /// the initial load.
@@ -59,7 +58,20 @@ abstract class WizardStepController {
   void dispose();
 }
 
+/// Coordinates the wizard steps and its input control states.
+///
+/// The default implementation of the [WizardStepController].
 class WizardStepControllerImpl implements WizardStepController {
+  /// Coordinates the wizard steps and its input control states.
+  ///
+  /// step: The wizard step which can contain ever state management solution
+  /// that you wish. A provider, bloc, etc can be provided in this property.
+  ///
+  /// initialIsBackEnabled: Indicates if the back button will be enabled on the
+  /// initial load.
+  ///
+  /// initialIsNextEnabled: Indicates if the previous button will be enabled on
+  /// the initial load.
   WizardStepControllerImpl({
     required this.step,
     bool isBackEnabled = true,

@@ -1,66 +1,13 @@
 import 'dart:async';
 
-import 'package:flutter/animation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../flutter_wizard.dart';
 
+/// Coordinates the wizard steps and its input control states.
 abstract class WizardController {
-  /// Coordinates the wizard steps and its input control states
-  ///
-  /// stepStates: The step states. This property determines the order of the
-  /// steps. Also this step can contain ever state management solution that you
-  /// wish. A list of providers, bloc, etc can be passed in here.
-  ///
-  /// stepBuilder: The builder method to build the step view. The builder method
-  /// provides the [BuildContext] and [WizardStepState]. The state can then be
-  /// used to determine how to build the view.
-  ///
-  /// Example:
-  /// ```dart
-  /// stepBuilder: (context, state) {
-  ///   if (state is StepOneProvider) {
-  ///     return StepOne(
-  ///       provider: state,
-  ///     );
-  ///   }
-  ///   if (state is StepTwoProvider) {
-  ///     return StepTwo(
-  ///       provider: state,
-  ///     );
-  ///   }
-  ///   return Container();
-  /// },
-  /// ```
-  ///
-  /// initialIndex: Indicates the initial index of the wizard.
-  ///
-  /// initialIsPreviousEnabled: Indicates if the previous button will be enabled
-  /// on the initial load.
-  ///
-  /// initialIsNextEnabled: Indicates if the previous button will be enabled on
-  /// the initial load.
-  ///
-  /// initialIsFinishEnabled: Indicates if the finish button will be enabled on
-  /// the initial load.
-  ///
-  /// onStepChanged: Callback that gets triggered when the step changes.
-  ///
-  /// onForcedAnimateBackCallback: Callback that gets triggered when the
-  /// disableGoNext forces the wizard to animate to a lower index.
-  factory WizardController({
-    required List<WizardStepController> stepControllers,
-    int initialIndex = 0,
-    StepCallback? onStepChanged,
-  }) {
-    return WizardControllerImpl(
-      stepControllers: stepControllers,
-      initialIndex: initialIndex,
-      onStepChanged: onStepChanged,
-    );
-  }
-
   /// Controller to control the page view.
   PageController get pageController;
 
@@ -199,7 +146,38 @@ abstract class WizardController {
   }
 }
 
+/// Coordinates the wizard steps and its input control states.
+///
+/// The default implementation of [WizardController].
 class WizardControllerImpl implements WizardController {
+  /// Creates a [WizardControllerImpl] implementation of the [WizardController]
+  /// contract.
+  ///
+  /// This class coordinates the wizard steps and its input control states.
+  ///
+  /// stepControllers: A list of [WizardStepController]s which contain the
+  /// step's state and initial input control states.
+  ///
+  /// Example:
+  /// ```dart
+  /// stepControllers: [
+  ///   WizardStepController(
+  ///     step: provider.stepOneProvider,
+  ///   ),
+  ///   WizardStepController(
+  ///     step: provider.stepTwoProvider,
+  ///     isBackEnabled: false,
+  ///     isNextEnabled: false,
+  ///   ),
+  ///   WizardStepController(
+  ///     step: provider.stepThreeProvider,
+  ///   ),
+  /// ],
+  /// ```
+  ///
+  /// initialIndex: Indicates the initial index of the wizard.
+  ///
+  /// onStepChanged: Callback that gets triggered when the step changes.
   WizardControllerImpl({
     required List<WizardStepController> stepControllers,
     int initialIndex = 0,
@@ -530,7 +508,100 @@ class _WizardControllerScope extends InheritedWidget {
   }
 }
 
+/// The [WizardController] for descendant widgets.
+///
+/// [DefaultWizardController] is an inherited widget that is used to share a
+/// [WizardController] with a [Wizard], [WizardEventListener] and/or any custom
+/// input controls.
+///
+/// ```dart
+/// return DefaultWizardController(
+///   stepControllers: [
+///     ...
+///   ],
+///   child: WizardEventListener(
+///     listener: (context, event) {
+///       ...
+///     },
+///     child: Column(
+///       children: [
+///         _ProgressIndicator(
+///           context,
+///         ),
+///         Expanded(
+///           child: Wizard(
+///             stepBuilder: (context, state) {
+///               ...
+///             },
+///           ),
+///         ),
+///         const _ActionBar(),
+///       ],
+///     ),
+///   ),
+/// );
+/// ```
 class DefaultWizardController extends StatefulWidget {
+  /// Creates the [DefaultWizardController] containing the [WizardController] for
+  /// descendant widgets.
+  ///
+  /// stepControllers: A list of [WizardStepController]s which contain the
+  /// step's state and initial input control states.
+  ///
+  /// Example:
+  /// ```dart
+  /// stepControllers: [
+  ///   WizardStepController(
+  ///     step: provider.stepOneProvider,
+  ///   ),
+  ///   WizardStepController(
+  ///     step: provider.stepTwoProvider,
+  ///     isBackEnabled: false,
+  ///     isNextEnabled: false,
+  ///   ),
+  ///   WizardStepController(
+  ///     step: provider.stepThreeProvider,
+  ///   ),
+  /// ],
+  /// ```
+  ///
+  /// initialIndex: Indicates the initial index of the wizard.
+  ///
+  /// onStepChanged: Callback that gets triggered when the step changes.
+  ///
+  /// onControllerCreated: Callback that gets triggered when the controller is
+  /// created.
+  ///
+  /// child: The child [Widget].
+  ///
+  /// Example:
+  /// ```dart
+  /// return DefaultWizardController(
+  ///   stepControllers: [
+  ///     ...
+  ///   ],
+  ///   child: WizardEventListener(
+  ///     listener: (context, event) {
+  ///       ...
+  ///     },
+  ///     child: Column(
+  ///       children: [
+  ///         _ProgressIndicator(
+  ///           context,
+  ///         ),
+  ///         Expanded(
+  ///           child: Wizard(
+  ///             stepBuilder: (context, state) {
+  ///               ...
+  ///             },
+  ///           ),
+  ///         ),
+  ///         const _ActionBar(),
+  ///       ],
+  ///     ),
+  ///   ),
+  /// );
+  /// ```
   const DefaultWizardController({
     required this.stepControllers,
     this.initialIndex = 0,
@@ -582,7 +653,7 @@ class _DefaultWizardControllerState extends State<DefaultWizardController> {
   }
 
   void _createController() {
-    controller = WizardController(
+    controller = WizardControllerImpl(
       stepControllers: widget.stepControllers,
       initialIndex: widget.initialIndex,
       onStepChanged: widget.onStepChanged,

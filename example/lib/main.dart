@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wizard/flutter_wizard.dart';
 import 'package:provider/provider.dart';
 
-import 'src/barrel.dart';
+import 'example.dart';
 
 void main() {
   runApp(const MyApp());

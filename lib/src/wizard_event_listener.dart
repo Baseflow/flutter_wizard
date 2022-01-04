@@ -1,14 +1,42 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+
 import '../flutter_wizard.dart';
 
+/// Signature for [WizardEvent] callbacks with [BuildContext] and [WizardEvent].
 typedef WizardEventCallback = FutureOr<void> Function(
   BuildContext context,
   WizardEvent event,
 );
 
+/// An event listener that can be used to listen to [WizardEvent]s of the
+/// [Wizard].
+///
+/// Possible events are:
+/// - [WizardEnableGoBackEvent]: Triggered when `enableGoBack` is called.
+/// - [WizardEnableGoNextEvent]: Triggered when `enableGoNext` is called.
+/// - [WizardDisableGoBackEvent]: Triggered when `disableGoBack` is called.
+/// - [WizardDisableGoNextEvent]: Triggered when `disableGoNext` is called.
+/// - [WizardGoNextEvent]: Triggered when `goNext` is called.
+/// - [WizardGoBackEvent]: Triggered when `goBack` is called.
+/// - [WizardGoToEvent]: Triggered when `goTo` is called.
+/// - [WizardForcedGoBackToEvent]: Triggered when `disableGoNext` is called
+/// with an index lower as the current index.
 class WizardEventListener extends StatefulWidget {
+  /// Creates an [WizardEventListener] which provide a listener that can be used
+  /// to listen to [WizardEvent]s of the [Wizard].
+  ///
+  /// Possible [WizardEvent]s are:
+  /// - [WizardEnableGoBackEvent]: Triggered when `enableGoBack` is called.
+  /// - [WizardEnableGoNextEvent]: Triggered when `enableGoNext` is called.
+  /// - [WizardDisableGoBackEvent]: Triggered when `disableGoBack` is called.
+  /// - [WizardDisableGoNextEvent]: Triggered when `disableGoNext` is called.
+  /// - [WizardGoNextEvent]: Triggered when `goNext` is called.
+  /// - [WizardGoBackEvent]: Triggered when `goBack` is called.
+  /// - [WizardGoToEvent]: Triggered when `goTo` is called.
+  /// - [WizardForcedGoBackToEvent]: Triggered when `disableGoNext` is called
+  /// with an index lower as the current index.
   const WizardEventListener({
     Key? key,
     required this.child,
@@ -28,8 +56,8 @@ class WizardEventListener extends StatefulWidget {
   /// - [WizardGoNextEvent]: Triggered when `goNext` is called.
   /// - [WizardGoBackEvent]: Triggered when `goBack` is called.
   /// - [WizardGoToEvent]: Triggered when `goTo` is called.
-  /// - [WizardForcedGoBackToEvent]: Triggered when `disableGoNext` is called with an
-  /// index lower as the current index.
+  /// - [WizardForcedGoBackToEvent]: Triggered when `disableGoNext` is called
+  /// with an index lower as the current index.
   final WizardEventCallback listener;
 
   @override

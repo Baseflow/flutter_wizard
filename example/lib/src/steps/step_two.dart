@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../barrel.dart';
-import 'step_two_provider.dart';
+import '../../example.dart';
 
 class StepTwo extends StatelessWidget {
   const StepTwo({

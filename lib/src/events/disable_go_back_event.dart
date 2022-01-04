@@ -1,10 +1,16 @@
 import '../../flutter_wizard.dart';
 
-class WizardDisableGoBackEvent implements WizardIndexEvent {
+/// A [WizardEvent] event that indicates that the go back feature is disabled
+/// for the provided index.
+class WizardDisableGoBackEvent implements WizardEvent {
+  /// Create a [WizardDisableGoBackEvent] event that indicates that the go back
+  /// feature is disabled for the provided index.
+  ///
+  /// index: The index of the step that the go back feature is disabled for.
   const WizardDisableGoBackEvent({
     required this.index,
   });
 
-  @override
+  /// The index of the step that the go back feature is disabled for.
   final int index;
 }

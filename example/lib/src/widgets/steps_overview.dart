@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wizard/flutter_wizard.dart';
 
-import '../barrel.dart';
+import '../../example.dart';
 
 class StepsOverview extends StatelessWidget {
   const StepsOverview({Key? key}) : super(key: key);

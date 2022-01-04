@@ -21,10 +21,35 @@ typedef WizardButtonBuilder = Widget Function(
   BuildContext context,
   VoidCallback? onPressed,
 );
+
+/// Signature for a step callback with oldIndex and index.
 typedef StepCallback = FutureOr<void> Function(int oldIndex, int index);
 
 /// A widget to create a multi-step wizard with separated state files.
 class Wizard extends StatelessWidget {
+  /// Creates a [Wizard] to create a multi-step wizard with separated state
+  /// files.
+  ///
+  /// stepBuilder: The builder method to build the steps corresponding widget. The builder
+  /// method provides the [BuildContext] and [WizardStepState]. The state can
+  /// then be used to determine how to build the view.
+  ///
+  /// Example:
+  /// ```dart
+  /// stepBuilder: (context, state) {
+  ///   if (state is StepOneProvider) {
+  ///     return StepOne(
+  ///       provider: state,
+  ///     );
+  ///   }
+  ///   if (state is StepTwoProvider) {
+  ///     return StepTwo(
+  ///       provider: state,
+  ///     );
+  ///   }
+  ///   return Container();
+  /// },
+  /// ```
   const Wizard({
     required this.stepBuilder,
     Key? key,

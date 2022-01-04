@@ -1,5 +1,27 @@
 import '../flutter_wizard.dart';
 
+/// The base class for all step states.
+///
+/// Example usage:
+/// ```dart
+/// class StepOneProvider with WizardStep {
+///   StepOneProvider();
+///
+///   @override
+///   Future<void> onShowing() async {
+///     ...
+///   }
+///
+///   @override
+///   Future<void> onHiding() async {
+///     ...
+///   }
+///
+///   void dispose() {
+///     ...
+///   }
+/// }
+/// ```
 mixin WizardStep {
   /// The field used to store the wizard controller.
   late WizardController _wizardController;

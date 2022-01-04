@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 mixin DisposableMixin {
-  final dispose$ = PublishSubject<void>();
+  final _dispose$ = PublishSubject<void>();
+
+  Stream<void> get dispose$ => _dispose$.stream.asBroadcastStream();
 
   @mustCallSuper
   void dispose() {
-    dispose$
+    _dispose$
       ..add(null)
       ..close();
   }

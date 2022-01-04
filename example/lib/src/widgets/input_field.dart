@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../barrel.dart';
+import '../../example.dart';
 
 class InputField extends StatelessWidget {
   const InputField({

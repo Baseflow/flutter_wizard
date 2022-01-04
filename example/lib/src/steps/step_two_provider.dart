@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_wizard/flutter_wizard.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../barrel.dart';
+import '../../example.dart';
 
 class StepTwoProvider with WizardStep, DisposableMixin {
   StepTwoProvider()
