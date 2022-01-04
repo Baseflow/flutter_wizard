@@ -1,3 +1,7 @@
+## 2.0.4
+* Improved code health
+* Improved documenentation
+
 ## 2.0.3
 * Upgraded the `rxdart` package to `^0.27.0`
 
