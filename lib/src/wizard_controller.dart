@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
@@ -144,6 +145,13 @@ abstract class WizardController {
     }
     return controller;
   }
+
+  /// Create a copy with the provided values
+  WizardController copyWith({
+    List<WizardStepController>? stepControllers,
+    int? index,
+    StepCallback? onStepChanged,
+  });
 }
 
 /// Coordinates the wizard steps and its input control states.
@@ -192,6 +200,21 @@ class WizardControllerImpl implements WizardController {
         _events = BehaviorSubject<WizardEvent>(),
         _onStepChanged = onStepChanged {
     _setWizardControllerInSteps();
+  }
+
+  WizardControllerImpl._({
+    required List<WizardStepController> stepControllers,
+    required int initialIndex,
+    required BehaviorSubject<int> index,
+    required StepCallback? onStepChanged,
+    required this.pageController,
+    required BehaviorSubject<WizardEvent> events,
+  })  : stepControllers = List.unmodifiable(stepControllers),
+        _index = index,
+        _events = events,
+        _onStepChanged = onStepChanged {
+    _setWizardControllerInSteps();
+    goTo(index: initialIndex);
   }
 
   void _setWizardControllerInSteps() {
@@ -486,6 +509,22 @@ class WizardControllerImpl implements WizardController {
       (controller) => controller.step == step,
     );
   }
+
+  @override
+  WizardController copyWith({
+    List<WizardStepController>? stepControllers,
+    int? index,
+    StepCallback? onStepChanged,
+  }) {
+    return WizardControllerImpl._(
+      stepControllers: stepControllers ?? this.stepControllers,
+      initialIndex: index ?? this.index,
+      onStepChanged: onStepChanged ?? _onStepChanged,
+      index: _index,
+      events: _events,
+      pageController: pageController,
+    );
+  }
 }
 
 class _WizardControllerScope extends InheritedWidget {
@@ -638,21 +677,6 @@ class _DefaultWizardControllerState extends State<DefaultWizardController> {
 
   @override
   void initState() {
-    _createController();
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(
-    covariant DefaultWizardController oldWidget,
-  ) {
-    // TODO: improve to copy with
-    controller.dispose();
-    _createController();
-    super.didUpdateWidget(oldWidget);
-  }
-
-  void _createController() {
     controller = WizardControllerImpl(
       stepControllers: widget.stepControllers,
       initialIndex: widget.initialIndex,
@@ -661,6 +685,39 @@ class _DefaultWizardControllerState extends State<DefaultWizardController> {
     if (widget.onControllerCreated != null) {
       widget.onControllerCreated!(controller);
     }
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(
+    covariant DefaultWizardController oldWidget,
+  ) {
+    final stepControllersUpdated = listEquals(
+      widget.stepControllers,
+      oldWidget.stepControllers,
+    );
+    final initialIndexUpdated = widget.initialIndex != oldWidget.initialIndex;
+    final onStepChangedUpdated =
+        widget.onStepChanged != oldWidget.onStepChanged;
+
+    final nothingUpdated = !stepControllersUpdated &&
+        !initialIndexUpdated &&
+        !onStepChangedUpdated;
+
+    if (nothingUpdated) {
+      super.didUpdateWidget(oldWidget);
+      return;
+    }
+
+    controller = controller.copyWith(
+      stepControllers: stepControllersUpdated ? widget.stepControllers : null,
+      index: initialIndexUpdated ? widget.initialIndex : null,
+      onStepChanged: onStepChangedUpdated ? widget.onStepChanged : null,
+    );
+    if (widget.onControllerCreated != null) {
+      widget.onControllerCreated!(controller);
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
