@@ -45,7 +45,10 @@ class StepTwo extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         color: isSelection
-                            ? Theme.of(context).colorScheme.secondaryVariant
+                            ? Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(0.5)
                             : Colors.grey.shade200,
                       ),
                       child: Center(
