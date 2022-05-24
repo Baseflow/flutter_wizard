@@ -1,3 +1,6 @@
+## 2.0.5
+* Added a `copyWith` method to the `WizardController` class.
+
 ## 2.0.4
 * Improved code health
 * Improved documenentation
